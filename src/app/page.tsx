@@ -1,103 +1,152 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
+import Link from 'next/link'
+import { Button } from '@/app/components/ui/button'
+import { Card } from '@/app/components/ui/card'
+import { MapPin, Clock, Thermometer, Sparkles, ArrowRight, Info, Target } from 'lucide-react'
+import React, { useState, useEffect } from 'react'
+import Header from "@/app/components/layout/header";
+
+export default function HomePage() {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) return null
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+      <div className="min-h-screen bg-white">
+        {/* 헤더 */}
+        <Header />
+        {/* 메인 콘텐츠 */}
+        <main className="px-5 py-6 space-y-6 pb-10">
+          {/* 메인 히어로 카드 - 토스 스타일 */}
+          <Card variant="gradient" className="p-8 relative overflow-hidden animate-fade-in">
+            {/* 토스 특유의 배경 도형들 */}
+            <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full"></div>
+            <div className="absolute -bottom-16 -left-16 w-40 h-40 bg-white/5 rounded-full"></div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+            <div className="relative z-10 text-center space-y-5">
+              <div className="space-y-2">
+                <h2 className="text-2xl font-bold text-white">오디</h2>
+                <p className="text-white/90 text-base font-medium">오늘어디</p>
+              </div>
+
+              {/* 토스 스타일 상태 카드 */}
+              <div className="bg-white/20 backdrop-blur-sm rounded-toss p-4 border border-white/30">
+                <div className="flex items-center justify-center space-x-2">
+                  <Sparkles className="w-5 h-5 text-yellow-300" />
+                  <p className="text-white font-bold text-lg">좋은 아침이에요!</p>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          {/* 위치 & 날씨 정보 - 토스 카드 스타일 */}
+          <Card className="p-5 animate-slide-up" hoverable>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="font-bold text-gray-900 text-lg">현재 정보</h3>
+                <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
+                  <Target className="w-4 h-4 text-primary-600" />
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-button">
+                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                    <MapPin className="w-4 h-4 text-blue-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">현재 위치</p>
+                    <p className="font-semibold text-gray-900">서울시 강남구</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-button">
+                  <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                    <Thermometer className="w-4 h-4 text-orange-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">날씨</p>
+                    <p className="font-semibold text-gray-900">맑음 18°C</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-button">
+                  <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                    <Clock className="w-4 h-4 text-purple-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">시간</p>
+                    <p className="font-semibold text-gray-900">오전 9:30</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          {/* 질문 카드 - 토스 스타일 */}
+          <Card className="p-6 text-center bg-gradient-to-r from-purple-50 to-pink-50 border-purple-100" hoverable>
+            <div className="space-y-3">
+              <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-400 rounded-toss flex items-center justify-center mx-auto">
+                <span className="text-2xl">✨</span>
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">
+                  오늘은 어디로 가볼까요?
+                </h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  AI가 당신의 위치, 날씨, 시간을 분석해<br />
+                  완벽한 장소를 추천해드려요
+                </p>
+              </div>
+            </div>
+          </Card>
+
+          {/* CTA 버튼 - 토스 특유의 큰 버튼 */}
+          <div className="space-y-4">
+            <Link href="/type">
+              <Button variant="primary" size="xl" fullWidth className="shadow-toss-hover">
+                <Sparkles className="w-6 h-6 mr-3" />
+                유형 선택하기
+                <ArrowRight className="w-6 h-6 ml-3" />
+              </Button>
+            </Link>
+          </div>
+
+          {/* 추가 옵션들 - 토스 스타일 작은 카드들 */}
+          <div className="grid grid-cols-1 gap-3">
+            <Link href="/guide">
+              <Card className="p-4 bg-amber-50 border-amber-200" hoverable>
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-amber-100 rounded-button flex items-center justify-center">
+                    <Info className="w-5 h-5 text-amber-600" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-semibold text-amber-800">처음 사용하시나요?</p>
+                    <p className="text-xs text-amber-600 mt-0.5">사용법을 알아보세요</p>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-amber-600" />
+                </div>
+              </Card>
+            </Link>
+
+            <Card className="p-4 bg-blue-50 border-blue-200" hoverable>
+              <div className="text-center space-y-2">
+                <div className="w-10 h-10 bg-blue-100 rounded-button flex items-center justify-center mx-auto">
+                  <MapPin className="w-5 h-5 text-blue-600" />
+                </div>
+                <div>
+                  <p className="font-semibold text-blue-800">지역 직접 선택</p>
+                  <p className="text-xs text-blue-600">원하는 지역을 선택해보세요</p>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </main>
+      </div>
+  )
 }
