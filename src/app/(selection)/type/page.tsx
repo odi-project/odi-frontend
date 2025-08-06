@@ -67,78 +67,102 @@ export default function TypeSelectionPage() {
                     </div>
                 </Card>
 
-                {/* 선택 카드들 */}
-                <div className="grid grid-cols-1 gap-4 w-full">
-                    {/* 식당 카드 */}
-                    <div onClick={() => setSelectedType('restaurant')}>
-                        <Card
-                            variant="secondary"
-                            className={`p-8 text-center cursor-pointer transition-all duration-300 w-full ${
-                                selectedType === 'restaurant'
-                                    ? 'ring-4 ring-secondary-200 shadow-2xl scale-105'
-                                    : 'hover:shadow-xl hover:scale-105'
-                            }`}
-                            hoverable
-                        >
-                            <div className="space-y-4">
-                                <div className="w-16 h-16 bg-white/20 rounded-3xl flex items-center justify-center mx-auto backdrop-blur-sm">
-                                    <Utensils className="w-8 h-8 text-white" />
-                                </div>
-                                <div>
-                                    <h3 className="font-bold text-white text-2xl mb-2">식당</h3>
-                                    <p className="text-white/80 text-sm mb-3">(음식점)</p>
-                                    <div className="space-y-1">
-                                        <p className="text-white/70 text-xs">• 맛집 추천</p>
-                                        <p className="text-white/70 text-xs">• 거리별 정렬</p>
-                                        <p className="text-white/70 text-xs">• 리뷰 & 평점</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </Card>
-                    </div>
+                {/* 선택 카드들 - 가로 배치로 변경 */}
+                <div className="space-y-6">
+                    <h3 className="text-lg font-bold text-gray-800 text-center">
+                        원하는 유형을 선택해주세요
+                    </h3>
 
-                    {/* 장소 카드 */}
-                    <div onClick={() => setSelectedType('place')}>
-                        <Card
-                            variant="primary"
-                            className={`p-8 text-center cursor-pointer transition-all duration-300 w-full ${
-                                selectedType === 'place'
-                                    ? 'ring-4 ring-primary-200 shadow-2xl scale-105'
-                                    : 'hover:shadow-xl hover:scale-105'
-                            }`}
-                            hoverable
+                    <div className="grid grid-cols-2 gap-4 w-full">
+                        {/* 식당 카드 - 컴팩트하게 */}
+                        <div
+                            onClick={() => setSelectedType('restaurant')}
+                            className="cursor-pointer"
                         >
-                            <div className="space-y-4">
-                                <div className="w-16 h-16 bg-white/20 rounded-3xl flex items-center justify-center mx-auto backdrop-blur-sm">
-                                    <Building2 className="w-8 h-8 text-white" />
-                                </div>
-                                <div>
-                                    <h3 className="font-bold text-white text-2xl mb-2">장소</h3>
-                                    <p className="text-white/80 text-sm mb-3">(관광지, 공원 등)</p>
-                                    <div className="space-y-1">
-                                        <p className="text-white/70 text-xs">• 명소 추천</p>
-                                        <p className="text-white/70 text-xs">• 날씨 고려</p>
-                                        <p className="text-white/70 text-xs">• 접근성 정보</p>
+                            <Card
+                                variant="secondary"
+                                className={`p-5 text-center transition-all duration-300 w-full ${
+                                    selectedType === 'restaurant'
+                                        ? 'ring-4 ring-secondary-200 shadow-2xl scale-105'
+                                        : 'hover:shadow-xl hover:scale-105'
+                                }`}
+                                hoverable
+                            >
+                                <div className="space-y-3">
+                                    <div className="w-12 h-12 bg-white/30 rounded-2xl flex items-center justify-center mx-auto backdrop-blur-sm">
+                                        <Utensils className="w-6 h-6 text-white" />
                                     </div>
+                                    <div>
+                                        <h3 className="font-bold text-white text-lg mb-1">식당</h3>
+                                        <p className="text-white/80 text-xs mb-2">(음식점)</p>
+                                        <div className="space-y-0.5">
+                                            <p className="text-white/70 text-xs">• 맛집 추천</p>
+                                            <p className="text-white/70 text-xs">• 거리별 정렬</p>
+                                            <p className="text-white/70 text-xs">• 리뷰 & 평점</p>
+                                        </div>
+                                    </div>
+                                    {selectedType === 'restaurant' && (
+                                        <div className="pt-2">
+                                            <div className="w-full h-0.5 bg-white/30 rounded"></div>
+                                            <p className="text-white text-xs font-medium mt-2">선택됨 ✓</p>
+                                        </div>
+                                    )}
                                 </div>
-                            </div>
-                        </Card>
+                            </Card>
+                        </div>
+
+                        {/* 장소 카드 - 컴팩트하게 */}
+                        <div
+                            onClick={() => setSelectedType('place')}
+                            className="cursor-pointer"
+                        >
+                            <Card
+                                variant="primary"
+                                className={`p-5 text-center transition-all duration-300 w-full ${
+                                    selectedType === 'place'
+                                        ? 'ring-4 ring-primary-200 shadow-2xl scale-105'
+                                        : 'hover:shadow-xl hover:scale-105'
+                                }`}
+                                hoverable
+                            >
+                                <div className="space-y-3">
+                                    <div className="w-12 h-12 bg-white/30 rounded-2xl flex items-center justify-center mx-auto backdrop-blur-sm">
+                                        <Building2 className="w-6 h-6 text-white" />
+                                    </div>
+                                    <div>
+                                        <h3 className="font-bold text-white text-lg mb-1">장소</h3>
+                                        <p className="text-white/80 text-xs mb-2">(관광지, 공원 등)</p>
+                                        <div className="space-y-0.5">
+                                            <p className="text-white/70 text-xs">• 명소 추천</p>
+                                            <p className="text-white/70 text-xs">• 날씨 고려</p>
+                                            <p className="text-white/70 text-xs">• 접근성 정보</p>
+                                        </div>
+                                    </div>
+                                    {selectedType === 'place' && (
+                                        <div className="pt-2">
+                                            <div className="w-full h-0.5 bg-white/30 rounded"></div>
+                                            <p className="text-white text-xs font-medium mt-2">선택됨 ✓</p>
+                                        </div>
+                                    )}
+                                </div>
+                            </Card>
+                        </div>
                     </div>
                 </div>
 
-                {/* 추천 이유 */}
-                <Card className="p-5 bg-purple-50 border-purple-200 w-full">
-                    <div className="text-center space-y-3">
-                        <div className="w-10 h-10 bg-purple-100 rounded-toss flex items-center justify-center mx-auto">
-                            <span className="text-xl">🤖</span>
+                {/* 추천 이유 - 더 컴팩트하게 */}
+                <Card className="p-4 bg-purple-50 border-purple-200 w-full">
+                    <div className="text-center space-y-2">
+                        <div className="flex items-center justify-center space-x-2">
+                            <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                                <span className="text-sm">🤖</span>
+                            </div>
+                            <h4 className="font-bold text-purple-800">AI 추천 시스템</h4>
                         </div>
-                        <div>
-                            <h4 className="font-bold text-purple-800 mb-2">AI 추천 시스템</h4>
-                            <p className="text-sm text-purple-700 leading-relaxed">
-                                시간대와 날씨, 위치를 종합적으로 분석해<br />
-                                가장 적합한 장소들을 엄선해드려요
-                            </p>
-                        </div>
+                        <p className="text-sm text-purple-700 leading-relaxed">
+                            시간대와 날씨, 위치를 종합적으로 분석해<br />
+                            가장 적합한 장소들을 엄선해드려요
+                        </p>
                     </div>
                 </Card>
 
@@ -158,6 +182,20 @@ export default function TypeSelectionPage() {
                                     <ArrowRight className="w-6 h-6 ml-3" />
                                 </Button>
                             </Link>
+                        </div>
+                    )}
+
+                    {/* 선택되지 않았을 때 안내 */}
+                    {!selectedType && (
+                        <div className="text-center py-4">
+                            <p className="text-sm text-gray-500 mb-2">
+                                ☝️ 위에서 원하는 유형을 선택해주세요
+                            </p>
+                            <div className="flex justify-center space-x-1">
+                                <div className="w-2 h-2 bg-gray-300 rounded-full animate-bounce"></div>
+                                <div className="w-2 h-2 bg-gray-300 rounded-full animate-bounce delay-75"></div>
+                                <div className="w-2 h-2 bg-gray-300 rounded-full animate-bounce delay-150"></div>
+                            </div>
                         </div>
                     )}
 
