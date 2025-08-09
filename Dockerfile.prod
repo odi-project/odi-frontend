@@ -1,0 +1,38 @@
+# ---- 1. Build stage ----
+FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
+WORKDIR /app
+
+# 필수 파일만 먼저 복사 후 의존성 설치 (캐시 최적화)
+COPY package*.json ./
+# pnpm/yarn 사용 시 아래로 교체
+# COPY pnpm-lock.yaml ./
+# RUN corepack enable && pnpm i --frozen-lockfile
+RUN npm ci
+
+# 앱 소스 복사 및 빌드
+COPY . .
+# 환경변수가 빌드에 필요하면 여기서 ENV/ARG 처리
+# ARG NEXT_PUBLIC_API_BASE_URL
+# ENV NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL
+RUN npm run build
+
+# ---- 2. Runtime stage ----
+FROM --platform=linux/amd64 node:20-alpine AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+# PORT 변경 원하면 -e PORT=8080 식으로 덮어쓰기 가능
+ENV PORT=3000
+
+# next build --output=standalone 결과물만 복사
+# .next/standalone 내부에는 node_modules 포함된 실행 번들이 있음
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
+
+# 보안상 non-root 권장
+USER node
+
+EXPOSE ${PORT}
+# Next standalone 서버 엔트리포인트
+CMD ["node", "server.js"]

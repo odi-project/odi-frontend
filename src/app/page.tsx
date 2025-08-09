@@ -84,12 +84,12 @@ export default function HomePage() {
                         <span className="text-lg">😅</span>
                         <p className="text-white font-bold text-lg">앗, 잠시 문제가 있어요</p>
                       </>
-                  ) : greetingData?.success ? (
+                  ) : greetingData?.data?.success ? (
                       // 성공 상태 - API에서 받은 인사말 표시
                       <>
                         <Sparkles className="w-5 h-5 text-yellow-300" />
                         <p className="text-white font-bold text-lg">
-                          {greetingData.data.response}
+                          {greetingData.data.data.response}
                         </p>
                       </>
                   ) : (
