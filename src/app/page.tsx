@@ -3,16 +3,50 @@
 import Link from 'next/link'
 import { Button } from '@/app/components/ui/button'
 import { Card } from '@/app/components/ui/card'
-import { MapPin, Clock, Thermometer, Sparkles, ArrowRight, Info, Target } from 'lucide-react'
+import {MapPin, Clock, Thermometer, Sparkles, ArrowRight, Info, Target, RefreshCw} from 'lucide-react'
 import React, { useState, useEffect } from 'react'
 import Header from "@/app/components/layout/header";
+import {useAppStore} from "@/app/store/app-store";
+import {useCreateGreeting, useTimeBasedGreeting} from "@/app/hooks/use-greeting";
 
 export default function HomePage() {
   const [mounted, setMounted] = useState(false)
 
+  // Zustand 상태
+  const { preferredMaxTokens, enableAutoRefresh, setLastGreetingUpdate } = useAppStore()
+
+  // React Query 훅들
+  const {
+    data: greetingData,
+    isLoading: isGreetingLoading,
+    error: greetingError,
+    refetch: refetchGreeting,
+    isRefetching,
+  } = useTimeBasedGreeting({
+    maxTokens: preferredMaxTokens,
+    enabled: mounted && enableAutoRefresh,
+  })
+
+  console.log('greetingData:', greetingData)
+
+  const createGreetingMutation = useCreateGreeting()
+
   useEffect(() => {
     setMounted(true)
   }, [])
+
+  // 수동 새로고침
+  const handleRefreshGreeting = async () => {
+    try {
+      await refetchGreeting()
+      setLastGreetingUpdate(new Date().toISOString())
+    } catch (error) {
+      console.error('인사말 새로고침 실패:', error)
+    }
+  }
+
+  // 로딩 상태 확인
+  const isLoadingGreeting = isGreetingLoading || isRefetching || createGreetingMutation.isPending
 
   if (!mounted) return null
 
@@ -35,11 +69,47 @@ export default function HomePage() {
               </div>
 
               {/* 토스 스타일 상태 카드 */}
-              <div className="bg-white/20 backdrop-blur-sm rounded-toss p-4 border border-white/30">
+              {/* AI 인사말 카드 */}
+              <div className="bg-white/20 backdrop-blur-sm rounded-toss p-4 border border-white/30 relative">
                 <div className="flex items-center justify-center space-x-2">
-                  <Sparkles className="w-5 h-5 text-yellow-300" />
-                  <p className="text-white font-bold text-lg">좋은 아침이에요!</p>
+                  {isLoadingGreeting ? (
+                      // 로딩 상태
+                      <>
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-yellow-300 rounded-full animate-spin"></div>
+                        <p className="text-white font-bold text-lg">인사말 생성 중...</p>
+                      </>
+                  ) : greetingError ? (
+                      // 에러 상태
+                      <>
+                        <span className="text-lg">😅</span>
+                        <p className="text-white font-bold text-lg">앗, 잠시 문제가 있어요</p>
+                      </>
+                  ) : greetingData?.success ? (
+                      // 성공 상태 - API에서 받은 인사말 표시
+                      <>
+                        <Sparkles className="w-5 h-5 text-yellow-300" />
+                        <p className="text-white font-bold text-lg">
+                          {greetingData.data.response}
+                        </p>
+                      </>
+                  ) : (
+                      // 기본 상태
+                      <>
+                        <Sparkles className="w-5 h-5 text-yellow-300" />
+                        <p className="text-white font-bold text-lg">좋은 하루 되세요! 🌟</p>
+                      </>
+                  )}
                 </div>
+
+                {/* 새로고침 버튼 */}
+                <button
+                    onClick={handleRefreshGreeting}
+                    disabled={isLoadingGreeting}
+                    className="absolute top-2 right-2 p-1.5 hover:bg-white/20 rounded-lg transition-colors disabled:opacity-50"
+                    title="새로운 인사말 생성"
+                >
+                  <RefreshCw className={`w-4 h-4 text-white ${isLoadingGreeting ? 'animate-spin' : ''}`} />
+                </button>
               </div>
             </div>
           </Card>
