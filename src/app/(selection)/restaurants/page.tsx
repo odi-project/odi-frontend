@@ -193,7 +193,7 @@ export default function RestaurantsPage() {
                                     <Link href={`/restaurants/${restaurant.id}`} className="flex-1">
                                         <Button variant="primary" fullWidth>
                                             <span className="mr-2">📞</span>
-                                            상세보기
+                                            상세
                                         </Button>
                                     </Link>
                                 </div>
