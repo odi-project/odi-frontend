@@ -16,12 +16,10 @@ export default function RootLayout({
     return (
         <html lang="ko">
             <body>
-            <Providers>
                 {/* PC: 중앙 모바일 뷰 / 모바일: 전체 화면 */}
                 <div className="w-full max-w-[375px] mx-auto bg-white min-h-screen shadow-mobile md:shadow-mobile">
-                    {children}
+                    <Providers>{children}</Providers>
                 </div>
-            </Providers>
             </body>
         </html>
     )
