@@ -4,10 +4,10 @@ metadata:
   name: frontend-service
   namespace: frontend
 spec:
-  type: LoadBalancer
+  type: ClusterIP   # 내부 통신 전용
   selector:
     app: frontend
   ports:
     - name: http
-      port: 80
-      targetPort: 3000
+      port: 80       # 내부에서 접근하는 포트
+      targetPort: 3000 # 파드에서 열고 있는 포트
